@@ -1,0 +1,26 @@
+.light-ball {
+    display: inline-block;
+    background-color: #2349c57a;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    opacity: 1;
+}
+.bright{
+    animation: glow 0.5s ease-in-out infinite alternate;
+}
+@keyframes glow {
+    from {
+      box-shadow: 0 0 10px -5px #2349c500;
+      background-color: #2349c57a;
+    }
+    to {
+      box-shadow: 0 0 10px 2px #2349c5;
+      background-color: #2349c5;
+    }
+  }
+
+.modal{
+    visibility:hidden;
+}

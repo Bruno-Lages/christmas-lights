@@ -44,9 +44,16 @@ function stopLights(){
 }
 
 ///////////////////////modals//////////////////
+let colorname;
+let ball;
 const button = document.querySelector('.button');
 button.addEventListener("click", e => e.preventDefault());
-button.addEventListener('click', closeModal)
+button.addEventListener('click', () => {
+    colorname = closeModal();
+    createRules(colorname);
+    beginLights();
+    updateBall(ball);
+}   );
 
 function showModal(){
     const modal = document.querySelector('.modal');
@@ -56,19 +63,37 @@ function showModal(){
 function closeModal(){
     const modal = document.querySelector('.modal');
     modal.style.visibility = "hidden";
-    const color = document.querySelector('.color').value;
-    console.log(color);
-    return color;
+    const colorname = document.querySelector('.color').value.replace('#','');
+    console.log(colorname);
+    return colorname;
 }
 
+function createRules(colorname){
+    const styleSheets = document.styleSheets[0];
+    console.log(styleSheets);
+    styleSheets.insertRule(`.class-${colorname} {animation: animation-${colorname} 0.5s ease-in-out infinite alternate;}`, styleSheets.rules.length);
+    styleSheets.insertRule(`@keyframes animation-${colorname} {
+        0% {
+            box-shadow: 0 0 10px -5px #2349c500;
+            background-color: #${colorname}7a;
+        }
+        100% {
+            box-shadow: 0 0 10px 4px #${colorname};
+            background-color: #${colorname};
+        }
+    }`, styleSheets.rules.length);
+}
 
 ///////////////////////////////future change colors feature/////////////////
 const container = document.querySelector('.container');
 container.addEventListener('click', e => {
     console.log(e.target);
-    const color = showModal();
-    //cria animação
-    beginLights();
-    e.target.classList.add('teste');
+    ball = e.target;
+    showModal();
     }
 );
+
+const updateBall = (ball) => {
+    ball.classList.remove('bright');
+    ball.classList.add('class-' + colorname);
+}

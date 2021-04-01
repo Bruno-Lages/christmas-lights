@@ -16,19 +16,30 @@ function beginLights(){
 function classifyBalls(){
     const balls = document.querySelectorAll('.light-ball');
     let i = 1;
-    balls.forEach( element => {
+    balls.forEach( (element, index) => {
         element.classList.add(i % 2 === 0? 'group1' : 'group2');
         i++;
+        element.setAttribute('id', index);
         return;
     })
 }
 function turnOnFirstgroup(){
     const firstBalls = document.querySelectorAll('.group1');
-    firstBalls.forEach(ball => ball.classList.add('bright'));
+    firstBalls.forEach(ball => {
+        console.log(ball.id);
+        ball.classList.add(checkCSS(ball.id)? `class-${ball.id}` : 'bright');
+    });
 }
 function turnOnSecondGroup(){
     const secondBalls = document.querySelectorAll('.group2');
-    setTimeout(() => secondBalls.forEach(ball => ball.classList.add('bright')), 500);
+    setTimeout(() => secondBalls.forEach(ball => ball.classList.add(checkCSS(ball.id)? `class-${ball.id}` : 'bright')), 500);
+}
+function checkCSS(id){
+    let check = false;
+    for (let rule of document.styleSheets[0].rules){
+        if (rule.cssText.includes(`class-${id}`)) return check = true;
+    }
+    return check;
 }
 ///////////////////////////turns lights off//////////////////////////////
 stop.addEventListener('click', stopLights);
@@ -36,23 +47,23 @@ stop.addEventListener('click', stopLights);
 function stopLights(){
     const balls = document.querySelectorAll('.light-ball');
     balls.forEach(ball => {
-        ball.classList.remove('group1');
-        ball.classList.remove('group2');
         ball.classList.remove('bright');
+        ball.classList.remove(`class-${ball.id}`);
     }
         )
 }
 
 ///////////////////////modals//////////////////
 let colorname;
-let ball;
+let ballElement;
+let ballId;
 const button = document.querySelector('.button');
 button.addEventListener("click", e => e.preventDefault());
 button.addEventListener('click', () => {
     colorname = closeModal();
-    createRules(colorname);
-    beginLights();
-    updateBall(ball);
+    createRules(colorname, ballId);
+    //beginLights();
+    changeBackground(ballId, colorname);
 }   );
 
 function showModal(){
@@ -68,10 +79,10 @@ function closeModal(){
     return colorname;
 }
 
-function createRules(colorname){
+function createRules(colorname, ballId){
     const styleSheets = document.styleSheets[0];
     console.log(styleSheets);
-    styleSheets.insertRule(`.class-${colorname} {animation: animation-${colorname} 0.5s ease-in-out infinite alternate;}`, styleSheets.rules.length);
+    styleSheets.insertRule(`.class-${ballId} {animation: animation-${colorname} 0.5s ease-in-out infinite alternate;}`, styleSheets.rules.length);
     styleSheets.insertRule(`@keyframes animation-${colorname} {
         0% {
             box-shadow: 0 0 10px -5px #2349c500;
@@ -88,12 +99,15 @@ function createRules(colorname){
 const container = document.querySelector('.container');
 container.addEventListener('click', e => {
     console.log(e.target);
-    ball = e.target;
+    ballElement = e.target;
+    ballId = e.target.id;
     showModal();
+    console.log(e.target.id);
     }
 );
 
-const updateBall = (ball) => {
-    ball.classList.remove('bright');
-    ball.classList.add('class-' + colorname);
+function changeBackground(ballId, colorname){
+    el = document.getElementById(ballId);
+    el.style.backgroundColor = colorname;
 }
+classifyBalls();

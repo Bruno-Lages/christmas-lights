@@ -7,10 +7,13 @@ start.addEventListener("click", beginLights);
 
 function beginLights(){
     getSpeed();
+    updateSpeedClass(speed);
     stopLights();
-    classifyBalls();
-    turnOnFirstgroup();
-    turnOnSecondGroup();
+    setTimeout( () => {
+        classifyBalls();
+        turnOnFirstgroup();
+        turnOnSecondGroup();
+    }, speed*1000);
 }
 
 
@@ -27,13 +30,12 @@ function classifyBalls(){
 function turnOnFirstgroup(){
     const firstBalls = document.querySelectorAll('.group1');
     firstBalls.forEach(ball => {
-        console.log(ball.id);
         ball.classList.add(checkCSS(ball.id)? `class-${ball.id}` : 'bright');
     });
 }
 function turnOnSecondGroup(){
     const secondBalls = document.querySelectorAll('.group2');
-    setTimeout(() => secondBalls.forEach(ball => ball.classList.add(checkCSS(ball.id)? `class-${ball.id}` : 'bright')), 500);
+    setTimeout(() => secondBalls.forEach(ball => ball.classList.add(checkCSS(ball.id)? `class-${ball.id}` : 'bright')), speed*1000);
 }
 function checkCSS(id){
     let check = false;
@@ -58,12 +60,13 @@ function stopLights(){
 let colorname;
 let ballElement;
 let ballId;
+let speed;
 const button = document.querySelector('.button');
 button.addEventListener("click", e => e.preventDefault());
 button.addEventListener('click', () => {
     colorname = closeModal();
     createRules(colorname, ballId);
-    changeBackground(ballId, colorname);
+    //changeBackground(ballId, colorname);
     beginLights();
 }   );
 
@@ -106,10 +109,10 @@ function createRules(colorname, ballId){
 const container = document.querySelector('.container');
 container.addEventListener('click', e => {
     console.log(e.target);
+    console.log(e.target.id);
     ballElement = e.target;
     ballId = e.target.id;
     showModal();
-    console.log(e.target.id);
     }
 );
 
@@ -130,5 +133,31 @@ classifyBalls();
 
 //////////////////////speed///////////////////////////
 
-//const getSpeed = () => document.querySelector("#speed").value;
+function getSpeed(){ 
+    speed = document.querySelector("#speed").value;
+    console.log(speed);
+    return speed;
+}
 
+function updateSpeedClass(speed){
+    css = document.styleSheets[0].cssRules;
+    const balls = document.querySelectorAll('.light-ball');
+    balls.forEach( (ball) => {
+        if (checkCSS(ball.id)){
+            let customClass = findClass(`class-${ball.id}`);
+            css[customClass].style.animationDuration = speed + 's';
+        }
+    });
+    const defaultClass = findClass('bright');
+    css[defaultClass].style.animationDuration = speed + 's';
+    console.log(css[defaultClass].cssText);
+}
+
+function findClass(className){
+    let key;
+    const css = Object.keys(document.styleSheets[0].rules);
+    css.forEach((rule) => {
+        if (document.styleSheets[0].rules[rule].cssText.includes(`.${className}`)) return key = rule;
+    })
+    return key;
+}

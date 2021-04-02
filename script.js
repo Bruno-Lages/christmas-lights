@@ -6,6 +6,7 @@ const stop = document.querySelector('#stop');
 start.addEventListener("click", beginLights);
 
 function beginLights(){
+    getSpeed();
     stopLights();
     classifyBalls();
     turnOnFirstgroup();
@@ -62,8 +63,8 @@ button.addEventListener("click", e => e.preventDefault());
 button.addEventListener('click', () => {
     colorname = closeModal();
     createRules(colorname, ballId);
-    //beginLights();
     changeBackground(ballId, colorname);
+    beginLights();
 }   );
 
 function showModal(){
@@ -81,6 +82,12 @@ function closeModal(){
 
 function createRules(colorname, ballId){
     const styleSheets = document.styleSheets[0];
+    let key;
+    if (checkCSS(ballId, key)) {
+        let rule = Number(findCssKey(ballId));
+        styleSheets.deleteRule(rule);
+        styleSheets.deleteRule(rule);
+    };
     console.log(styleSheets);
     styleSheets.insertRule(`.class-${ballId} {animation: animation-${colorname} 0.5s ease-in-out infinite alternate;}`, styleSheets.rules.length);
     styleSheets.insertRule(`@keyframes animation-${colorname} {
@@ -110,4 +117,18 @@ function changeBackground(ballId, colorname){
     el = document.getElementById(ballId);
     el.style.backgroundColor = colorname;
 }
+function findCssKey(id){
+    let key;
+    const css = Object.keys(document.styleSheets[0].rules);
+    css.forEach((rule, keys) => {
+        console.log(rule);
+        if (document.styleSheets[0].rules[rule].cssText.includes(`class-${id}`)) return key = keys;
+    })
+    return key;
+}
 classifyBalls();
+
+//////////////////////speed///////////////////////////
+
+//const getSpeed = () => document.querySelector("#speed").value;
+

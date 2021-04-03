@@ -7,7 +7,9 @@ start.addEventListener("click", beginLights);
 
 function beginLights(){
     getSpeed();
+    getIntensity();
     updateSpeedClass(speed);
+    updateIntensityClass(intensity);
     stopLights();
     setTimeout( () => {
         classifyBalls();
@@ -58,7 +60,6 @@ function stopLights(){
 
 ///////////////////////modals//////////////////
 let colorname;
-let ballElement;
 let ballId;
 let speed;
 const button = document.querySelector('.button');
@@ -110,7 +111,6 @@ const container = document.querySelector('.container');
 container.addEventListener('click', e => {
     console.log(e.target);
     console.log(e.target.id);
-    ballElement = e.target;
     ballId = e.target.id;
     showModal();
     }
@@ -159,5 +159,30 @@ function findClass(className){
     css.forEach((rule) => {
         if (document.styleSheets[0].rules[rule].cssText.includes(`.${className}`)) return key = rule;
     })
-    return key;
+    return Number(key);
+}
+
+//////////////////////intensity////////////////////////
+let intensity;
+
+function getIntensity(){
+    intensity = document.querySelector('#intensity').value;
+    return intensity;
+}
+
+function updateIntensityClass(intensity){
+    css = document.styleSheets[0].cssRules;
+    const balls = document.querySelectorAll('.light-ball');
+    balls.forEach( (ball) => {
+        if (checkCSS(ball.id)){
+            let customClass = findClass(`class-${ball.id}`);
+            let rgbBegnin = css[customClass + 1][1].style.boxShadow.indexOf('rgb');
+            let rgbEnd = Number(css[customClass + 1][1].style.boxShadow.indexOf(')'))+1;
+            let rgbColor = css[customClass + 1][1].style.boxShadow.slice(rgbBegnin, rgbEnd);
+            css[customClass + 1][1].style.boxShadow = `0 0 15px ${intensity}px ${rgbColor}`;
+        }
+    });
+    const defaultClass = findClass('bright');
+    css[defaultClass + 1][1].style.boxShadow = `0 0 15px ${intensity}px #2349c5`;
+    console.log(css[defaultClass + 1].cssText);
 }

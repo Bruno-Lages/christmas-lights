@@ -21,11 +21,9 @@ function beginLights(){
 
 function classifyBalls(){
     const balls = document.querySelectorAll('.light-ball');
-    let i = 1;
     balls.forEach( (element, index) => {
-        element.classList.add(i % 2 === 0? 'group1' : 'group2');
-        i++;
         element.setAttribute('id', index);
+        element.classList.add(Number(element.id) % 2 === 0? 'group1' : 'group2');
         return;
     })
 }
@@ -106,7 +104,7 @@ function createRules(colorname, ballId){
     }`, styleSheets.rules.length);
 }
 
-///////////////////////////////future change colors feature/////////////////
+///////////////////////////////change colors feature/////////////////
 const container = document.querySelector('.container');
 container.addEventListener('click', e => {
     console.log(e.target);
@@ -117,7 +115,7 @@ container.addEventListener('click', e => {
 );
 
 function changeBackground(ballId, colorname){
-    el = document.getElementById(ballId);
+    el = document.querySelector(`#${ballId}.light-ball`);
     el.style.backgroundColor = colorname;
 }
 function findCssKey(id){

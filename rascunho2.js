@@ -6,6 +6,7 @@ function ChristmasLights(){
     this.intensity;
 
 this.start = () => {
+    this.classifyBalls();
     this.capturarCliques();
     this.pararLuzes();
     this.mudarCor();
@@ -32,7 +33,7 @@ this. beginLights = () => {
         // turns the second light group on, according to the chosen speed
         //also preventing the acceleration of the lights every time the lights turn on repeatedly
         this.turnOnSecondGroup(); 
-    }, speed*1000);
+    }, this.speed*1000);
 }
 
 //splits the balls into two groups
@@ -40,7 +41,6 @@ this.classifyBalls = () => {
     //select the balls of the div
     const balls = document.querySelectorAll('.light-ball');
     //creates an index for the loop
-    let i = 1;
     //for each ball, creates an id and a class, according if the index is even or odd;
     balls.forEach( (element, index) => {
         //sets the ball's id
@@ -73,12 +73,12 @@ this.turnOnSecondGroup = () => {
     //gets the balls in the first group
     const secondBalls = document.querySelectorAll('.group2');
     //after the chosen interval, checks if theres a custom setting and sets it, otherwise, sets the default class
-    setTimeout(() => secondBalls.forEach(ball => ball.classList.add(this.checkCSS(ball.id)? `class-${ball.id}` : 'bright')), speed*1000);
+    setTimeout(() => secondBalls.forEach(ball => ball.classList.add(this.checkCSS(ball.id)? `class-${ball.id}` : 'bright')), this.speed*1000);
 }
 
 this.setSpeed = () => {
     this.speed = document.querySelector("#speed").value;
-    console.log(speed);
+    console.log(this.speed);
 }
 
 //find the key of a class ball in the style sheet
@@ -91,6 +91,7 @@ this.findKeyClass = (className) => {
     cssKeys.forEach( rule => {
         if (css[rule].cssText.includes(`.${className}`)) return key = rule;
     });
+    console.log(key);
     return Number(key);
 }
 
@@ -109,7 +110,7 @@ this.updateSpeedClass = () => {
     //find where is the default class and change the speed of the animation
     const defaultClass = this.findKeyClass('bright');
     css[defaultClass].style.animationDuration = this.speed + 's';
-    console.log(css[defaultClass].cssText);
+    //console.log(css[defaultClass].cssText);
 }
 
 this.setIntensity = () => {
@@ -137,7 +138,7 @@ this.updateIntensityClass = () => {
         //finds the default ball class localization in the style sheet and changes the light intensity(box shadow spread radius)
         const defaultClass = this.findKeyClass('bright');
         css[defaultClass + 1][1].style.boxShadow = `0 0 15px ${this.intensity}px #2349c5`;
-        console.log(css[defaultClass + 1].cssText);
+        //console.log(css[defaultClass + 1].cssText);
     });
 }
 
@@ -156,10 +157,11 @@ this.showModal = () => {
 
 this.setColorname = () => {
     this.colorname = document.querySelector('.color').value.replace('#','');
+    console.log(this.colorname);
 }
 
 this.setBallId = (ballId) => {
-    return this.ballId = ballId;
+    this.ballId = ballId;
 }
 
 this.closeModal = () => { //closes the modal and set the colorname
@@ -170,7 +172,7 @@ this.closeModal = () => { //closes the modal and set the colorname
 this.createRules = () => {
     const css = document.styleSheets[0];
     if (this.checkCSS(this.ballId)) { //if the chosen ball already has a class, remove the previous class and the animation
-        let repeatedRule = Number(findCssKey(this.ballId));
+        let repeatedRule = Number(this.findKeyClass(`class-${this.ballId}`));
         css.deleteRule(repeatedRule);
         css.deleteRule(repeatedRule);//the animation occupies the same place of the removed class
     };
@@ -204,6 +206,7 @@ this.mudarCor = () => {
     const container = document.querySelector('.container');
     container.addEventListener('click', e => {
         this.setBallId(e.target.id);
+        console.log(this.ballId);
         this.showModal();
     })
 }
@@ -212,7 +215,7 @@ this.submitButton = () => {
     const button = document.querySelector('.button');
     button.addEventListener("click", e => {
         e.preventDefault();
-        this.setColorname;
+        this.setColorname();
         this.closeModal();
         this.createRules();
         this.beginLights();

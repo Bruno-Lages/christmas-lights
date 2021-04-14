@@ -8,11 +8,14 @@ class ChristmasLights{
     }
 
 start(){ //begins the aplication
+    this.createRow();
     this.classifyBalls();
     this.getClicks();
     this.stop();
     this.chooseColor();
     this.submitButton();
+    this.addRow();
+    this.removeRow();
 }
 
 beginLights(){
@@ -169,12 +172,17 @@ closeModal(){ //closes the modal and set the colorname
     modal.style.visibility = "hidden";
 }
 
+deleteRule(ballId){ 
+    const css = document.styleSheets[0];
+    let choosenRule = Number(this.findKeyClass(`class-${ballId}`));
+    css.deleteRule(choosenRule);
+    css.deleteRule(choosenRule);//the animation occupies the same place of the removed class
+}
+
 createRules(){
     const css = document.styleSheets[0];
     if (this.checkCSS(this.ballId)) { //if the chosen ball already has a class, remove the previous class and the animation
-        let repeatedRule = Number(this.findKeyClass(`class-${this.ballId}`));
-        css.deleteRule(repeatedRule);
-        css.deleteRule(repeatedRule);//the animation occupies the same place of the removed class
+        this.deleteRule(this.ballId);
     };
     console.log(css);
     //creates a class in the style sheet
@@ -190,6 +198,55 @@ createRules(){
             background-color: #${this.colorname};
         }
     }`, css.rules.length);
+}
+
+createBalls(container){
+    for (let i = 1; i <= 7; i++){
+        let ball = document.createElement('div');
+        ball.setAttribute('class', 'light-ball');
+        container.append(ball);
+    }
+}
+
+createRow(){
+    const container = document.querySelector('.container');
+    const row = document.createElement('div');
+    row.setAttribute('class', `row${container.childElementCount}`);
+    this.createBalls(row);
+    container.append(row);
+    this.classifyBalls();
+}
+
+addRow(){
+    const button = document.querySelector('.new-row');
+    button.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector('.container').childElementCount < 7 && this.createRow();
+    })
+}
+
+deleteRules(container){
+    const row = container;
+    const firstId = Number(container.firstElementChild.id);
+    const lastId = Number(container.lastElementChild.id);
+    console.log(firstId, lastId);
+    for (let i = firstId; i < lastId; i++){
+        if (this.checkCSS(i)) this.deleteRule(i);
+    }
+}
+
+deleteRow(){
+    const container = document.querySelector('.container');
+    this.deleteRules(container.lastChild);
+    container.removeChild(container.lastChild);
+}
+
+removeRow(){
+    const removeButton = document.querySelector('.remove-row');
+    removeButton.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector('.container').childElementCount > 1 && this.deleteRow();
+    })
 }
 
 getClicks(){

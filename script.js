@@ -16,6 +16,7 @@ start(){ //begins the aplication
     this.submitButton();
     this.addRow();
     this.removeRow();
+    this.closeButton();
 }
 
 beginLights(){
@@ -155,7 +156,7 @@ stopLights(){
 
 showModal(){ 
     const modal = document.querySelector('.modal');
-    modal.style.visibility = "visible";
+    modal.style.display = "flex";
 }
 
 setColorname(){
@@ -169,7 +170,7 @@ setBallId(ballId){
 
 closeModal(){ //closes the modal and set the colorname
     const modal = document.querySelector('.modal');
-    modal.style.visibility = "hidden";
+    modal.style.display = "none";
 }
 
 deleteRule(ballId){ 
@@ -222,6 +223,7 @@ addRow(){
     button.addEventListener('click', e => {
         e.preventDefault();
         document.querySelector('.container').childElementCount < 7 && this.createRow();
+        this.beginLights();
     })
 }
 
@@ -246,6 +248,7 @@ removeRow(){
     removeButton.addEventListener('click', e => {
         e.preventDefault();
         document.querySelector('.container').childElementCount > 1 && this.deleteRow();
+        this.stopLights();
     })
 }
 
@@ -277,6 +280,11 @@ submitButton(){
         this.createRules();
         this.beginLights();
     });
+}
+
+closeButton(){
+    const button = document.querySelector('.close-modal');
+    button.addEventListener('click', () => this.closeModal());
 }
 
 }

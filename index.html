@@ -8,11 +8,21 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>Christmas Lights</h1>
     <div class="container">
     </div>
+
+    <div class="modal">
+        <div class="close-modal" aria-label="close modal">x</div>
+        <input type="color" class="color"/>
+        <input type="submit" class="button" value="change color"/>
+    </div>
+
     <div class="menu">
-        <div id="start">start</div>
-        <div id="stop">stop</div>
+        <div class="row-settings">
+            <div class="remove-row">Remove row</div>
+            <div class="new-row">+Row</div>
+        </div>
         <div class="range-container">
             <label for="speed">Speed:</label>
             <input type="range" name="speed" id="speed" max="1" min="0.1" step="0.01" value="0.5">
@@ -21,13 +31,12 @@
             <label for="speed">Intensity:</label>
             <input type="range" name="intensity" id="intensity" max="10" min="1" step="0.1" value="4">
         </div>
-        <button class="new-row">add row</button>
-        <button class="remove-row">remove row</button>
+        <div class="interruptor">
+            <div id="stop"></div>
+            <div id="start"></div>
+        </div>
     </div>
-    <div class="modal">
-        <input type="color" class="color"/>
-        <input type="submit" class="button"/>
-    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

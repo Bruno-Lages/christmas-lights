@@ -66,11 +66,7 @@ label {
   cursor: pointer;
 }
 
-#start:hover {
-  width: 45px;
-  height: 45px;
-  transition: width 0.3s ease-in, height 0.5s ease-in;
-}
+
 
 #stop {
   background-image: url('assets/vectorpaint.svg');
@@ -82,11 +78,7 @@ label {
   cursor: pointer;
 }
 
-#stop:hover {
-  width: 45px;
-  height: 45px;
-  transition: width 0.3s ease-in, height 0.5s ease-in;
-}
+
 
 .row-settings {
   align-self: flex-start;

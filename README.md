@@ -1,7 +1,7 @@
 # <h1 align="center">Christmas lights</h1>
 
 <h2 align="center"> 
-	🚧  In-progress 🚀 🚧
+	🚧  concluded 🚀 🚧
 </h2>
 
  <p align="center">
@@ -15,7 +15,7 @@
 
 <a name="about"></a>
 ## 💻 About the application
-Christmas lights is an application where the user can simulate the effect of a string of rippling lights, similar to the ones displayed during the Christmas Holidays.
+Christmas lights is an application where the user can simulate the effect of a string of rippling lights, similar to the ones displayed during the Christmas Holidays. You can check the result <a href="https://bruno-lages.github.io/christmas-lights/">here</a>.
 
 <a name="features"></a>
 ## ⚙️ Features 
@@ -25,8 +25,7 @@ Christmas lights is an application where the user can simulate the effect of a s
 - [x] User can change the interval of time controlling the change in intensity
 - [x] User can specify the intensity value 
 - [x] User can select the color used to fill each circle
-- [ ] User can change the size of any circle in the row
-- [ ] User can specify the number of rows to be included in the display. From one to seven rows can be chosen
+- [x] User can specify the number of rows to be included in the display. From one to seven rows can be chosen
 
 <a name="technologies"></a>
 ## 🛠 Tecnologies
